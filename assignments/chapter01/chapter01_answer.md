@@ -78,7 +78,6 @@ assignments/chapter01/images/step01_environment.png
 
 <!-- 아래 줄의 주석을 지우고 실제 이미지 Markdown을 넣어도 됩니다. -->
 
-`여기에 STEP 1 증거 화면을 삽입하세요.`
 ![PostgreSQL 실행 환경 확인](./images/step01_environment.png)
 ---
 
@@ -231,7 +230,6 @@ ___________결과를 보고 요구사항이 결과에 잘 반영이 되었는지
 assignments/chapter01/images/step03_join_result.png
 ```
 
-`여기에 STEP 3 핵심 증거 화면을 삽입하세요.`
 ![PostgreSQL 실행 확인](./images/step03_join_result.png)
 ---
 
@@ -332,7 +330,6 @@ AI가 `ORD-002` 두 행이 실제 두 주문인지 중복 입력인지 스스로
 assignments/chapter01/images/step04_duplicate_result.png
 ```
 
-`여기에 STEP 4 핵심 증거 화면을 삽입하세요.`
 ![AI 데이터 분석 실행 확인](./images/step04_duplicate_result.png)
 ---
 
@@ -532,7 +529,6 @@ assignments/chapter01/images/step07_ai_review.png
 
 AI 대화 전체를 캡처할 필요는 없습니다. 핵심 요청과 검토 과정이 보이는 화면 1장 정도면 충분합니다.
 
-`여기에 AI 활용 증거 화면을 삽입하세요.`
 ![AI 활용 확인](./images/step04_duplicate_result.png)
 ---
 
