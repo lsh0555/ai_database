@@ -227,15 +227,15 @@ SELECT 'C' AS step;
 실제 결과 : SELECT 'A' AS step;
            SELECT 'B' AS step;
            SELECT 'C' AS step;
-결과 탭 또는 실행 순서에서 관찰한 점 : 
+결과 탭 또는 실행 순서에서 관찰한 점 : A, B, C 세 문장이 순서대로 모두 실행되었고 각각의 실행 결과를 학인 할 수 있었다.
 ```
 
 ## 5-4. 결과 해석
 
 ```text
-한 문장 실행과 전체 스크립트 실행의 차이:
+한 문장 실행과 전체 스크립트 실행의 차이 : 한 문장 실행은 현재 선택한 SQL 문장만 실행하고, 전체 스크립트 실행은 작성된 여러 SQL 문장을 한꺼번에 실행한다.
 
-변경 SQL에서 실행 범위를 잘못 선택하면 위험한 이유:
+변경 SQL에서 실행 범위를 잘못 선택하면 위험한 이유 : 원하지 않은 INSERT, UPDATE, DELETE 문장까지 함께 실행되어 데이터가 추가되거나 수정·삭제될 수 있기 때문이다.
 ```
 
 ### 증거 화면
@@ -508,7 +508,7 @@ https://github.com/<본인-GitHub-ID>/<본인-저장소>/blob/main/assignments/c
 내 제출 URL:
 
 ```text
-
+https://github.com/lsh0555/ai_database/blob/main/assignments/chapter03/chapter03_answer.md
 ```
 
 > 저장소 메인 URL, 교수자 템플릿 URL, Raw URL이 아니라 **작성 완료된 본인 `chapter03_answer.md` 파일 화면 URL**을 제출합니다.
