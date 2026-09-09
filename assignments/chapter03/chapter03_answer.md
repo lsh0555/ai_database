@@ -121,32 +121,35 @@ SHOW TimeZone;
 
 | 확인 항목 | 실제 결과 | 내가 이해한 의미 |
 | --- | --- | --- |
-| `version()` | PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35227, 64-bit |  |
-| `current_database()` | ai_database_book |  |
-| `current_user` | postgres |  |
-| `current_schema()` | public |  |
-| `search_path` | "$user", public |  |
-| `transaction_read_only` | off |  |
-| `TimeZone` | Asia/Seoul |  |
+| `version()` | PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35227, 64-bit | 현재 설치 되어 있는 PostgreSQL의 버전 정보를 확인 할 수 있다. |
+| `current_database()` | ai_database_book | 현재 접속되어 SQL을 사용하고 있는 데이터베이스 이름을 확인 할 수 있다. |
+| `current_user` | postgres | 현재 DB를 사용 중인 사용자 계정명을 확인 할 수 있다. |
+| `current_schema()` | public | 기본으로 조회·생성되는 스키마 이름을 확인 할 수 있다. |
+| `search_path` | "$user", public | 객체를 찾을 때 데이터베이스가 검색하는 스키마의 우선순위 경로를 확인 할 수 있다. |
+| `transaction_read_only` | off | 현재 세션이 읽기 전용이 아니며, 데이터 추가·수정·삭제(CUD)가 가능한 상태임을 확인 할 수 있다. |
+| `TimeZone` | Asia/Seoul | DB 세션에서 사용하는 기본 시공간 타임존이 한국 표준시(KST)로 설정되어 있음을 확인 할 수 있다. |
 
 ## 3-2. 반드시 설명할 것
 
 ### DBeaver 연결 이름과 `current_database()`는 왜 같은 개념이 아닌가요?
 
 ```text
-
+DBeaver의 연결 이름은 사용자가 연결을 구분하기 위해 정한 이름이고,
+current_database()는 현재 PostgreSQL에서 실제로 접속 중인 데이터베이스의 이름이기 때문이다.
 ```
 
 ### `current_schema()`와 `search_path`는 어떤 관계가 있나요?
 
 ```text
-
+search_path는 PostgreSQL이 스키마를 찾는 순서를 나타내고,
+current_schema()는 그 검색 순서에서 현재 기본으로 사용되는 스키마를 보여준다.
 ```
 
 ### `transaction_read_only = off`라는 결과만으로 모든 테이블을 만들 권한이 있다고 단정할 수 있나요?
 
 ```text
-
+아니요. transaction_read_only = off는 현재 트랜잭션이 읽기 전용이 아니라는 뜻일 뿐이기에
+실제로 테이블을 만들 수 있는지는 현재 사용자의 권한과 데이터베이스 및 스키마의 CREATE 권한을 추가로 확인해야 한다.
 ```
 
 ## 3-3. 증거 화면
@@ -183,13 +186,14 @@ ai_database_book
 ```text
 전환 전 데이터베이스 : ai_database_book
 전환 후 데이터베이스 : ai_database_book
-전환 여부를 판단한 근거:
+전환 여부를 판단한 근거: 원래부터 올바른 DB였기에 전환 전후 변화가 없다.
 ```
 
 ### 화면에서 보이는 연결 이름만 믿지 않고 SQL을 다시 실행해야 하는 이유
 
 ```text
-
+DBeaver의 연결 이름만으로 실제 접속 중인 데이터베이스를 확실하게 판단할 수 없기 때문에
+current_database()를 실행하여 직접 확인해야 한다.
 ```
 
 ---
@@ -264,17 +268,17 @@ code/chapter03/setup_validate_local.sql
 실행 결과에서 확인한 항목:
 
 ```text
-PostgreSQL 버전:
-현재 DB:
-현재 사용자:
-현재 스키마:
-search_path:
-읽기 전용 여부:
-TimeZone:
-1 + 1 결과:
-public 스키마 존재 여부:
-public USAGE 권한:
-public CREATE 권한:
+PostgreSQL 버전 : PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35227, 64-bit
+현재 DB : ai_database_book
+현재 사용자 : postgres
+현재 스키마 : public
+search_path : "$user", public
+읽기 전용 여부 : off
+TimeZone : Asia/Seoul
+1 + 1 결과 : 2
+public 스키마 존재 여부 : 
+public USAGE 권한 : 
+public CREATE 권한 : 
 ```
 
 ### 이 파일을 여러 번 실행해도 비교적 안전한 이유
