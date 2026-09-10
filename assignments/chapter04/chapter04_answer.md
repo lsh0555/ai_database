@@ -12,7 +12,7 @@
 
 ```text
 GitHub 계정 또는 별칭 : https://github.com/lsh0555
-과제 작성일 : 2026-09-07
+과제 작성일 : 2026-09-10
 사용한 AI 도구 : ChatGPT
 ```
 
@@ -32,21 +32,21 @@ SHOW transaction_read_only;
 
 | 확인 항목 | 실제 결과 | 의미 |
 | --- | --- | --- |
-| current_database() |  |  |
-| current_user |  |  |
-| current_schema() |  |  |
-| search_path |  |  |
-| transaction_read_only |  |  |
+| current_database() | ai_database_book | 현재 접속 중인 데이터베이스는 ai_database_book이다. |
+| current_user | postgres | 현재 DB에 접속한 사용자는 postgres이다. |
+| current_schema() | public | 현재 기본으로 사용되는 스키마는 public이다. |
+| search_path | "$user", public | 객체를 찾을 때 사용자 이름과 같은 스키마를 먼저 찾고, 그다음 public 스키마를 찾는다. |
+| transaction_read_only | off | 현재 트랜잭션이 읽기 전용 상태가 아니다. |
 
-- [ ] 현재 DB가 `ai_database_book`이다.
-- [ ] 변경 가능한 연결인지 확인했다.
-- [ ] 실행할 SQL 범위를 확인했다.
-- [ ] Auto-commit 상태를 확인했다.
+- [O] 현재 DB가 `ai_database_book`이다.
+- [O] 변경 가능한 연결인지 확인했다.
+- [O] 실행할 SQL 범위를 확인했다.
+- [O] Auto-commit 상태를 확인했다.
 
 ### 변경 SQL을 실행하기 전에 현재 DB와 실행 범위를 확인해야 하는 이유
 
 ```text
-
+잘못된 데이터베이스에서 변경 SQL을 실행하거나 의도하지 않은 SQL까지 함께 실행하는 실수를 방지하기 위해 현재 DB와 실행 범위를 먼저 확인해야 한다.
 ```
 
 ---
@@ -56,13 +56,13 @@ SHOW transaction_read_only;
 ## 2-1. 실행 전 예상
 
 ```text
-테이블 이름:
-한 행의 의미:
-예상 행 수:
-기본키:
-필수 열:
-중복을 막는 열:
-자동 생성 열:
+테이블 이름 : public.students
+한 행의 의미 : 학생 1명의 정보
+예상 행 수 : 0개
+기본키 : id
+필수 열 : name, email, created_at
+중복을 막는 열 : email
+자동 생성 열 : id, created_at
 ```
 
 ## 2-2. 실행 파일
@@ -74,26 +74,26 @@ code/chapter04/01_create_students.sql
 ## 2-3. 실행 후 확인
 
 ```text
-테이블 생성 성공 여부:
-실제 행 수:
-DBeaver에서 확인한 위치:
+테이블 생성 성공 여부 : 생성됨
+실제 행 수 : 0개
+DBeaver에서 확인한 위치 : public → Tables → students
 ```
 
 ### 각 열의 역할
 
 | 열 | 타입 | NULL 가능? | 역할 |
 | --- | --- | --- | --- |
-| id |  |  |  |
-| name |  |  |  |
-| email |  |  |  |
-| major |  |  |  |
-| grade |  |  |  |
-| created_at |  |  |  |
+| id | INTEGER | 불가능 | 학생을 고유하게 구분하는 기본키(PK), 자동 번호 생성 |
+| name | VARCHAR(50) | 불가능 | 학생 이름 저장 |
+| email | VARCHAR(100) | 불가능 | 학생 이메일 저장, 중복 불가(UNIQUE) |
+| major | VARCHAR(100) | 가능 | 학생 전공 저장 |
+| grade | INTEGER | 가능 | 학생 학년 저장 |
+| created_at | TIMESTAMPTZ | 불가능 | 데이터가 생성된 날짜와 시간 저장, 기본값은 현재 시간 |
 
 ### `id`를 학번이나 학생 수로 해석하면 안 되는 이유
 
 ```text
-
+id는 학생을 고유하게 구분하기 위해 데이터베이스에서 자동으로 생성하는 식별자이기 때문에 실제 학번을 의미하지 않으며, 학생 수를 나타내는 값도 아니다.
 ```
 
 ### 증거 화면
@@ -105,6 +105,7 @@ assignments/chapter04/images/step02_table.png
 ```
 
 `여기에 테이블 구조 확인 화면을 삽입하세요.`
+![테이블 구조 확인 화면](./assignments/chapter04/images/step02_table.png)
 
 ---
 
@@ -113,9 +114,9 @@ assignments/chapter04/images/step02_table.png
 ## 3-1. 실행 전 예상
 
 ```text
-현재 행 수:
-실행 후 예상 행 수:
-예상되는 NULL 포함 학생:
+현재 행 수 : 
+실행 후 예상 행 수 : 
+예상되는 NULL 포함 학생 : 
 ```
 
 ## 3-2. 실행 파일
