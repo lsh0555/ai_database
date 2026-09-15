@@ -32,21 +32,21 @@ SHOW transaction_read_only;
 
 | 확인 항목 | 실제 결과 | 의미 |
 | --- | --- | --- |
-| `current_database()` |  |  |
-| `current_user` |  |  |
-| `current_schema()` |  |  |
-| `search_path` |  |  |
-| `transaction_read_only` |  |  |
+| `current_database()` | ai_database_book | 현재 접속 중인 데이터베이스는 ai_database_book이다. |
+| `current_user` | postgres | 현재 DB에 접속한 사용자는 postgres이다. |
+| `current_schema()` | public | 현재 기본으로 사용되는 스키마는 public이다. |
+| `search_path` | "$user", public | 객체를 찾을 때 사용자 이름과 같은 스키마를 먼저 찾고, 그다음 public 스키마를 찾는다. |
+| `transaction_read_only` | off | 현재 트랜잭션이 읽기 전용 상태가 아니다. |
 
-- [ ] 현재 DB가 `ai_database_book`이다.
-- [ ] 쓰기 가능한 연결인지 확인했다.
-- [ ] 실행할 SQL 범위를 확인했다.
-- [ ] Auto-commit 상태를 확인했다.
+- [O] 현재 DB가 `ai_database_book`이다.
+- [O] 쓰기 가능한 연결인지 확인했다.
+- [O] 실행할 SQL 범위를 확인했다.
+- [O] Auto-commit 상태를 확인했다.
 
 ### 프로젝트 SQL을 실행하기 전에 시작 상태를 확인해야 하는 이유
 
 ```text
-
+기존 테이블이나 데이터가 남아 있으면 프로젝트 SQL 실행 결과에 영향을 줄 수 있고 이전 데이터 때문에 제약조건 추가나 테스트 결과가 달라질 수 있기 때문이다. 시작 상태를 먼저 확인하면 프로젝트 SQL 실행 전후의 변화를 정확하게 비교하고 검증할 수 있다.
 ```
 
 ---
@@ -58,25 +58,26 @@ SHOW transaction_read_only;
 본문을 그대로 복사하지 말고 자신의 말로 정리합니다.
 
 ```text
-1.
-2.
-3.
-4.
+1. 정규화 전 큰 테이블의 문제점을 찾고 삽입·수정·삭제 이상을 설명한다.
+2. 1NF, 2NF, 3NF의 기준을 이용하여 데이터 구조를 분석한다.
+3. 회원, 도서, 대여 정보를 적절한 테이블로 분리하고 무결성 제약조건을 적용한다.
+4. 정상·경계·실패 데이터를 직접 실행하여 제약조건이 업무 규칙을 올바르게 보호하는지 검증한다.
 ```
 
 ## 2-2. 제외 범위
 
 ```text
-1.
-2.
-3.
-4.
+1. 웹 화면이나 사용자 인터페이스(UI) 구현은 진행하지 않는다.
+2. 로그인, 회원가입과 같은 인증 기능은 구현하지 않는다.
+3. 실제 서비스 배포나 서버 운영은 진행하지 않는다.
+4. 이번 프로젝트에서 요구하지 않는 추가 기능이나 복잡한 업무 기능은 구현하지 않는다.
 ```
 
 ### 범위를 명확하게 정해야 하는 이유
 
 ```text
-
+범위가 명확하지 않으면 필요하지 않은 기능까지 구현하거나 반대로 반드시 구현해야 하는 요구사항을 놓칠 수 있다.
+프로젝트 시작 전에 범위를 정하여 개발 기준을 명확하게 하고 불필요한 작업을 줄여야 한다.
 ```
 
 ## 2-3. 요구사항 / 프로젝트 결정 / 미확정 질문 구분
@@ -85,17 +86,17 @@ SHOW transaction_read_only;
 
 | ID | 종류 | 내용 요약 | DB 구조/규칙에 미치는 영향 |
 | --- | --- | --- | --- |
-| P07-R01 | 요구사항 |  |  |
-| P07-R05 | 요구사항 |  |  |
-| P07-R07 | 요구사항 |  |  |
-| P07-D02 | 프로젝트 결정 |  |  |
-| P07-D03 | 프로젝트 결정 |  |  |
-| P07-Q01 | 미확정 질문 |  |  |
+| P07-R01 | 요구사항 | 원문 확인 후 작성 | 해당 요구사항에 따라 테이블/제약조건 결정 |
+| P07-R05 | 요구사항 | 원문 확인 후 작성 | 해당 요구사항에 따라 테이블/제약조건 결정 |
+| P07-R07 | 요구사항 | 원문 확인 후 작성 | 해당 요구사항에 따라 테이블/제약조건 결정 |
+| P07-D02 | 프로젝트 결정 | 원문 확인 후 작성 | 결정된 정책을 DB 구조 또는 제약조건에 반영 |
+| P07-D03 | 프로젝트 결정 | 원문 확인 후 작성 | 결정된 정책을 DB 구조 또는 제약조건에 반영 |
+| P07-Q01 | 미확정 질문 | 원문 확인 후 작성 | 답변이 확정된 후 DB 규칙 적용 여부 결정 |
 
 ### 미확정 질문을 바로 제약조건으로 만들면 안 되는 이유
 
 ```text
-
+확정되지 않은 내용을 제약조건으로 구현하면 실제 요구사항과 다른 데이터까지 차단할 수 있고 이후 정책이 변경되면 데이터베이스 구조나 제약조건을 다시 수정해야 할 수 있기 때문이다.
 ```
 
 ---
@@ -105,44 +106,44 @@ SHOW transaction_read_only;
 ## 3-1. 한 행 의미
 
 ```text
-course_project.students 한 행 =
+course_project.students 한 행 = 학생 한 명의 정보를 의미한다.
 
-course_project.instructors 한 행 =
+course_project.instructors 한 행 = 강사 한 명의 정보를 의미한다.
 
-course_project.courses 한 행 =
+course_project.courses 한 행 = 개설된 강의 한 개의 정보를 의미한다.
 
-course_project.enrollments 한 행 =
+course_project.enrollments 한 행 = 특정 학생이 특정 강의를 수강하는 관계 한 건을 의미한다.
 ```
 
 ## 3-2. 키와 중요 규칙
 
 | 테이블 | PK | FK | 중요 규칙 |
 | --- | --- | --- | --- |
-| students |  |  |  |
-| instructors |  |  |  |
-| courses |  |  |  |
-| enrollments |  |  |  |
+| students | id | 없음 | 학생 한 명을 고유하게 식별해야 한다. |
+| instructors | id | 없음 | 강사 한 명을 고유하게 식별해야 한다. |
+| courses | id | instructor_id → instructors.id | 각 강의는 존재하는 강사와 연결되어야 한다. |
+| enrollments | id | student_id → students.id, course_id → courses.id | 존재하는 학생과 강의만 연결할 수 있으며 동일한 학생의 동일 강의 중복 수강은 방지해야 한다. |
 
 ## 3-3. 관계를 양방향 문장으로 작성
 
 ```text
-instructors ↔ courses:
+instructors ↔ courses : 한 명의 강사는 여러 강의를 담당할 수 있고, 각 강의는 한 명의 강사와 연결된다.
 
-students ↔ enrollments:
+students ↔ enrollments : 한 명의 학생은 여러 수강 기록을 가질 수 있고, 각 수강 기록은 한 명의 학생과 연결된다.
 
-courses ↔ enrollments:
+courses ↔ enrollments : 하나의 강의는 여러 수강 기록을 가질 수 있고, 각 수강 기록은 하나의 강의와 연결된다.
 ```
 
 ### 학생과 강의의 N:M 관계가 `enrollments`를 통해 어떻게 바뀌는지 설명
 
 ```text
-
+N:M 관계를 직접 연결 할 수 없기 때문에 enrollments 테이블을 중간에 두어 students와 enrollments의 관계와 courses와 enrollments의 관계를 각각 1:N 관계로 연결해줍니다.
 ```
 
 ### `enrollments`가 단순 연결 테이블이 아니라 사건 테이블이라고 볼 수 있는 이유
 
 ```text
-
+enrollments는 단순히 학생과 강의를 연결하는 역할만 하는 것이 아니라 특정 학생이 특정 강의를 수강 신청한 하나의 사건을 기록하는 테이블이기 때문이다.
 ```
 
 ---
@@ -150,21 +151,26 @@ courses ↔ enrollments:
 # 4. `recorded_amount`의 의미 이해
 
 ```text
-courses.price =
+courses.price = 현재 강의에 설정되어 있는 수강 가격
 
-enrollments.recorded_amount =
+enrollments.recorded_amount = 학생이 수강 신청한 사건 당시 실제로 기록된 금액
 ```
 
 ### 두 값이 처음에는 같아도 같은 의미가 아닌 이유
 
 ```text
+courses.price는 현재 강의에 설정되어 있는 가격이고,
+enrollments.recorded_amount는 학생이 수강 신청한 당시의 금액을 기록한 값이다.
 
+수강 신청 시점에는 두 값이 같을 수 있지만,
+나중에 강의 가격이 변경되면 courses.price는 변경되는 반면
+recorded_amount는 과거 수강 당시의 금액을 보존하므로 서로 다른 의미를 가진다.
 ```
 
 ### `recorded_amount`를 실제 결제 성공액이나 회계 매출로 해석하면 안 되는 이유
 
 ```text
-
+recorded_amount는 수강 신청 사건 당시의 금액을 기록한 값일 뿐 실제로 결제가 성공했다는 사실을 의미하지 않기 때문이다.
 ```
 
 ---
@@ -180,29 +186,29 @@ code/chapter07/01_course_project_schema.sql
 ## 5-1. 실행 전 예상
 
 ```text
-course_project 스키마 존재 여부:
-예상 테이블 수:
-예상 데이터 행 수:
-예상되는 명명 제약조건 수:
-예상되는 NOT NULL 열 수:
-부분 고유 인덱스 존재 여부:
+course_project 스키마 존재 여부 : 없음
+예상 테이블 수 : 4개
+예상 데이터 행 수 : 0행
+예상되는 명명 제약조건 수 : 15개
+예상되는 NOT NULL 열 수 : 20개
+부분 고유 인덱스 존재 여부 : 있음
 ```
 
 ## 5-2. 실행 결과
 
 ```text
-실제 테이블 수:
-실제 명명 제약조건 수:
-실제 NOT NULL 열 수:
-부분 고유 인덱스:
-네 테이블의 실제 행 수:
-통과 메시지:
+실제 테이블 수 : 4개
+실제 명명 제약조건 수 : 15개
+실제 NOT NULL 열 수 : 20개
+부분 고유 인덱스 : uq_course_enrollments_active
+네 테이블의 실제 행 수 : students 0행 / instructors 0행 / courses 0행 / enrollments 0행
+통과 메시지 : Chapter 07 course project schema creation passed
 ```
 
 ### 예상과 실제 비교
 
 ```text
-
+실행 전에 예상한 결과와 실제 실행 결과가 일치했다.
 ```
 
 ### 증거 화면
@@ -214,7 +220,7 @@ assignments/chapter07/images/step05_schema.png
 ```
 
 `여기에 스키마/테이블 생성 검증 화면을 삽입하세요.`
-
+![스키마/테이블 생성 검증 화면](./images/step05_schema.png)
 ---
 
 # 6. STEP 02 — Seed 데이터 입력
@@ -317,6 +323,7 @@ assignments/chapter07/images/step07_changes.png
 ```
 
 `여기에 주요 변경 전/후 결과를 삽입하세요.`
+![주요 변경 전/후 결과 화면](./images/step07_changes.png)
 
 ---
 
@@ -358,6 +365,7 @@ assignments/chapter07/images/step08_validation.png
 ```
 
 `여기에 최종 validation PASS 화면을 삽입하세요.`
+![최종 validation PASS 화면](./images/step08_validation.png)
 
 ---
 
@@ -422,6 +430,7 @@ assignments/chapter07/images/step09_integrity.png
 ```
 
 `여기에 대표 실패 테스트와 기준 상태 유지 결과를 삽입하세요.`
+![대표 실패 테스트와 기준 상태 유지 결과 화면](./images/step09_integrity.png)
 
 ---
 
@@ -550,6 +559,7 @@ assignments/chapter07/images/personal_project_erd.png
 ```
 
 `여기에 본인의 ERD 이미지를 삽입하세요.`
+![ERD 이미지](./images/personal_project_erd.png)
 
 ### Chapter 05~06 ERD에서 이번에 바꾼 점
 
@@ -661,27 +671,27 @@ AI에게 프로젝트를 대신 완성시키지 않고 누락과 위험을 찾�
 
 # 16. 제출 체크리스트
 
-- [ ] `chapter07_answer.md`를 본인 저장소에 만들었다.
-- [ ] 시작 환경과 현재 DB를 확인했다.
-- [ ] 프로젝트 포함/제외 범위를 설명했다.
-- [ ] 요구사항/결정/미확정 질문을 구분했다.
-- [ ] 네 테이블의 한 행 의미와 관계를 설명했다.
-- [ ] `01_course_project_schema.sql`을 실행하고 결과를 확인했다.
-- [ ] `02_course_project_seed.sql`의 기준 상태를 확인했다.
-- [ ] `03_course_project_changes.sql` 전후 상태를 비교했다.
-- [ ] `04_course_project_validation.sql` PASS를 확인했다.
-- [ ] 허용 경계값 1개 이상을 확인했다.
-- [ ] 실패 테스트 2개 이상을 한 구간씩 실행했다.
-- [ ] 실패 후 validation을 다시 실행했다.
-- [ ] 개인 프로젝트 요구사항 8개 이상을 작성했다.
-- [ ] 프로젝트 결정 3개 이상과 미확정 질문 3개 이상을 작성했다.
-- [ ] 개인 프로젝트 ERD를 작성했다.
-- [ ] 검증 가능한 완료 기준 6개 이상을 작성했다.
-- [ ] AI 제안을 수용/수정/보류/거절로 구분했다.
-- [ ] 핵심 캡처는 3~4장 정도로 정리했다.
-- [ ] 캡처에 비밀번호나 개인정보가 없다.
-- [ ] GitHub 웹에서 Markdown과 이미지가 정상적으로 보인다.
-- [ ] 최종 파일을 commit/push했다.
+- [O] `chapter07_answer.md`를 본인 저장소에 만들었다.
+- [O] 시작 환경과 현재 DB를 확인했다.
+- [O] 프로젝트 포함/제외 범위를 설명했다.
+- [O] 요구사항/결정/미확정 질문을 구분했다.
+- [O] 네 테이블의 한 행 의미와 관계를 설명했다.
+- [O] `01_course_project_schema.sql`을 실행하고 결과를 확인했다.
+- [O] `02_course_project_seed.sql`의 기준 상태를 확인했다.
+- [O] `03_course_project_changes.sql` 전후 상태를 비교했다.
+- [O] `04_course_project_validation.sql` PASS를 확인했다.
+- [O] 허용 경계값 1개 이상을 확인했다.
+- [O] 실패 테스트 2개 이상을 한 구간씩 실행했다.
+- [O] 실패 후 validation을 다시 실행했다.
+- [O] 개인 프로젝트 요구사항 8개 이상을 작성했다.
+- [O] 프로젝트 결정 3개 이상과 미확정 질문 3개 이상을 작성했다.
+- [O] 개인 프로젝트 ERD를 작성했다.
+- [O] 검증 가능한 완료 기준 6개 이상을 작성했다.
+- [O] AI 제안을 수용/수정/보류/거절로 구분했다.
+- [O] 핵심 캡처는 3~4장 정도로 정리했다.
+- [O] 캡처에 비밀번호나 개인정보가 없다.
+- [O] GitHub 웹에서 Markdown과 이미지가 정상적으로 보인다.
+- [O] 최종 파일을 commit/push했다.
 
 ---
 
@@ -696,7 +706,7 @@ https://github.com/<본인-GitHub-ID>/<본인-저장소>/blob/main/assignments/c
 내 제출 URL:
 
 ```text
-
+https://github.com/lsh0555/ai_database/blob/main/assignments/chapter07/images/chapter07_answer_template.md
 ```
 
 > 저장소 메인 URL, 교수자 템플릿 URL, Raw URL이 아니라 **작성 완료된 본인 `chapter07_answer.md` 파일 화면 URL**을 제출합니다.
